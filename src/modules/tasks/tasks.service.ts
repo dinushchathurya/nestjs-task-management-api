@@ -1,15 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { TaskRepository } from 'src/repositories/task.repository';
 import { Task } from 'src/models/tasks/entities/task.entity';
 import { CreateTaskDto } from 'src/models/tasks/dto/create-task.dto';
 import { TaskStatus } from 'src/common/enums/TaskStatus.enum';
+import { GetTasksFilterDto } from 'src/models/tasks/dto/get-tasks-filter.dto';
 
 @Injectable()
 export class TasksService {
 
     constructor(@InjectRepository(TaskRepository) private taskRepository:TaskRepository) {}
+
+    // get tasks
+    getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+        return this.taskRepository.getTasks(filterDto);
+    }
     
     // get single Task
     async getTaskById(id: number): Promise<Task> {
